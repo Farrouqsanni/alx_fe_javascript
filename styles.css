@@ -7,6 +7,10 @@ body {
     height: 100vh;
     margin: 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 #todo-app {
     width: 100%;
     max-width: 400px;
@@ -15,6 +19,10 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 #task-input {
     width: 100%;
     padding: 10px;
@@ -22,6 +30,10 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 #add-task-btn {
     width: 100%;
     padding: 10px;
@@ -31,13 +43,25 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+<<<<<<< HEAD
 #add-task-btn:hover {
     background-color: #0056b3;
 }
+=======
+
+#add-task-btn:hover {
+    background-color: #0056b3;
+}
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 ul {
     list-style-type: none;
     padding: 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 li {
     background-color: #eeeeee;
     margin-top: 8px;
@@ -47,6 +71,10 @@ li {
     justify-content: space-between;
     align-items: center;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 .remove-btn {
     cursor: pointer;
     background-color: #ff6347;
@@ -55,6 +83,10 @@ li {
     border-radius: 4px;
     padding: 5px 10px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de4e4142b2409de93930e91c4a5f20339b303236
 .remove-btn:hover {
     background-color: #d9534f;
 }
