@@ -1,14 +1,46 @@
-const quotes = [
-  "The journey of a thousand miles begins with a single step.",
-  "What you think, you become.",
-  "Excellence is not an act, but a habit.",
-  "Do what you can, with what you have, where you are."
+// Global array of quotes
+let quotes = [
+  { text: "The journey of a thousand miles begins with one step.", category: "Motivation" },
+  { text: "In the middle of difficulty lies opportunity.", category: "Wisdom" },
+  { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", category: "Success" }
 ];
 
-const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-
-newQuoteBtn.addEventListener('click', () => {
+// Function to display a random quote
+function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
-  quoteDisplay.textContent = quotes[randomIndex];
-});
+  const quote = quotes[randomIndex];
+  
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.innerHTML = `
+    <p>"${quote.text}"</p>
+    <small>Category: ${quote.category}</small>
+  `;
+}
+
+// Function to add a new quote
+function addQuote() {
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
+
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
+
+  if (text === "" || category === "") {
+    alert("Please enter both a quote and a category!");
+    return;
+  }
+
+  quotes.push({ text, category });
+  textInput.value = "";
+  categoryInput.value = "";
+
+  // Update DOM after adding
+  displayRandomQuote();
+}
+
+// Event listeners
+document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
+document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
+
+// Show one quote initially
+displayRandomQuote();
