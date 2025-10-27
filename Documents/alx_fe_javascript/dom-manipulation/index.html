@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dynamic Quote Generator - Storage & JSON</title>
   <style>
-    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; }
-    #quote-display { background:#f7f7f7; padding:16px; border-radius:8px; margin-bottom:12px; }
-    input { padding:8px; margin:6px 6px 6px 0; }
-    button { padding:8px 12px; margin:6px 6px 6px 0; cursor:pointer; }
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 32px auto; padding: 0 16px; }
+    #quote-display { background:#f9f9f9; padding:16px; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,0.06); margin-bottom:12px; }
+    button { margin:6px 6px 6px 0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+    input[type="text"] { padding:8px; width:280px; margin-right:8px; }
+    .controls { margin-top:12px; }
     .small { font-size:0.9rem; color:#555; }
   </style>
 </head>
@@ -18,20 +19,24 @@
   <div id="quote-display">
     <p id="quote-text" class="small"></p>
     <p id="quote-category" class="small"></p>
-    <p id="last-seen" class="small"></p>
   </div>
 
   <button id="new-quote-btn">Show New Quote</button>
+  <button id="export-btn">Export Quotes (JSON)</button>
 
-  <h3>Add a New Quote</h3>
-  <input type="text" id="new-quote-text" placeholder="Enter quote text" />
-  <input type="text" id="new-quote-category" placeholder="Enter quote category" />
-  <button id="add-quote-btn">Add Quote</button>
+  <div class="controls" style="margin-top:18px;">
+    <h3>Add a New Quote</h3>
+    <input type="text" id="new-quote-text" placeholder="Enter quote text" />
+    <input type="text" id="new-quote-category" placeholder="Enter quote category" />
+    <button id="add-quote-btn">Add Quote</button>
+  </div>
 
-  <h3>Storage & Data</h3>
-  <button id="export-json-btn">Export Quotes (JSON)</button>
-  <input type="file" id="import-file" accept=".json" />
-  <button id="clear-local-btn">Clear Local Storage</button>
+  <div class="controls" style="margin-top:12px;">
+    <h3>Import Quotes (JSON)</h3>
+    <input type="file" id="importFile" accept=".json" />
+    <button id="import-btn">Import Selected File</button>
+    <p class="small">Imported JSON must be an array of objects with <code>text</code> and <code>category</code> properties.</p>
+  </div>
 
   <script src="script.js"></script>
 </body>
