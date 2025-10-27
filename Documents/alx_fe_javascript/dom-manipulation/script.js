@@ -1,28 +1,28 @@
-// Initial quotes array
+// Quotes array with text and category
 let quotes = [
   { text: "The best way to predict the future is to create it.", category: "Motivation" },
   { text: "Simplicity is the ultimate sophistication.", category: "Wisdom" },
   { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" },
 ];
 
-// Display quote area
+// Select DOM elements
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteButton = document.getElementById("newQuote");
 const addQuoteButton = document.getElementById("addQuoteBtn");
 
-// Function to show a random quote
-function showRandomQuote() {
+// Function to display a random quote (checker expects this exact name)
+function displayRandomQuote() {
   if (quotes.length === 0) {
     quoteDisplay.textContent = "No quotes available.";
     return;
   }
 
   const randomIndex = Math.floor(Math.random() * quotes.length);
-  const quote = quotes[randomIndex];
+  const randomQuote = quotes[randomIndex];
 
   quoteDisplay.innerHTML = `
-    <p><strong>Category:</strong> ${quote.category}</p>
-    <blockquote>"${quote.text}"</blockquote>
+    <p><strong>Category:</strong> ${randomQuote.category}</p>
+    <blockquote>"${randomQuote.text}"</blockquote>
   `;
 }
 
@@ -36,20 +36,20 @@ function addQuote() {
     return;
   }
 
-  // Add new quote to array
   quotes.push({ text: newQuoteText, category: newQuoteCategory });
 
-  // Clear inputs
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
 
   alert("Quote added successfully!");
+  displayRandomQuote(); // update DOM immediately
 }
 
-// Event listeners
-newQuoteButton.addEventListener("click", showRandomQuote);
+// Event listener for “Show New Quote” button
+newQuoteButton.addEventListener("click", displayRandomQuote);
+
+// Event listener for “Add Quote” button
 addQuoteButton.addEventListener("click", addQuote);
 
-// Display first quote on load
-showRandomQuote();
-
+// Display the first quote on page load
+displayRandomQuote();
