@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Content Generator</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Quote Generator - Storage & JSON</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; }
+    #quote-display { background:#f7f7f7; padding:16px; border-radius:8px; margin-bottom:12px; }
+    input { padding:8px; margin:6px 6px 6px 0; }
+    button { padding:8px 12px; margin:6px 6px 6px 0; cursor:pointer; }
+    .small { font-size:0.9rem; color:#555; }
+  </style>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
   <div id="quote-display">
-    <p id="quote-text"></p>
-    <p id="quote-category"></p>
+    <p id="quote-text" class="small"></p>
+    <p id="quote-category" class="small"></p>
+    <p id="last-seen" class="small"></p>
   </div>
 
   <button id="new-quote-btn">Show New Quote</button>
@@ -20,7 +28,11 @@
   <input type="text" id="new-quote-category" placeholder="Enter quote category" />
   <button id="add-quote-btn">Add Quote</button>
 
+  <h3>Storage & Data</h3>
+  <button id="export-json-btn">Export Quotes (JSON)</button>
+  <input type="file" id="import-file" accept=".json" />
+  <button id="clear-local-btn">Clear Local Storage</button>
+
   <script src="script.js"></script>
 </body>
 </html>
-
