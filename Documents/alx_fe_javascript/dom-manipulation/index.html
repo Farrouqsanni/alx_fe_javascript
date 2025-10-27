@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dynamic Quote Generator - Storage & JSON</title>
-  <style>
-    body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 32px auto; padding: 0 16px; }
-    #quote-display { background:#f9f9f9; padding:16px; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,0.06); margin-bottom:12px; }
-    button { margin:6px 6px 6px 0; padding:8px 12px; border-radius:6px; cursor:pointer; }
-    input[type="text"] { padding:8px; width:280px; margin-right:8px; }
-    .controls { margin-top:12px; }
-    .small { font-size:0.9rem; color:#555; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Quote Generator with Filter</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <div id="quote-display">
-    <p id="quote-text" class="small"></p>
-    <p id="quote-category" class="small"></p>
+  <div id="quote-box">
+    <p id="quote-text"></p>
+    <p id="quote-category"></p>
   </div>
 
-  <button id="new-quote-btn">Show New Quote</button>
-  <button id="export-btn">Export Quotes (JSON)</button>
+  <div id="controls">
+    <button id="new-quote-btn">New Quote</button>
+  </div>
 
-  <div class="controls" style="margin-top:18px;">
-    <h3>Add a New Quote</h3>
+  <hr />
+
+  <div id="add-quote-section">
+    <h2>Add a New Quote</h2>
     <input type="text" id="new-quote-text" placeholder="Enter quote text" />
-    <input type="text" id="new-quote-category" placeholder="Enter quote category" />
+    <input type="text" id="new-quote-category" placeholder="Enter category" />
     <button id="add-quote-btn">Add Quote</button>
   </div>
 
-  <div class="controls" style="margin-top:12px;">
-    <h3>Import Quotes (JSON)</h3>
-    <input type="file" id="importFile" accept=".json" />
-    <button id="import-btn">Import Selected File</button>
-    <p class="small">Imported JSON must be an array of objects with <code>text</code> and <code>category</code> properties.</p>
+  <hr />
+
+  <div id="filter-section">
+    <h2>Filter by Category</h2>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+    </select>
+  </div>
+
+  <hr />
+
+  <div id="json-section">
+    <h2>Import/Export Quotes (JSON)</h2>
+    <button onclick="exportToJsonFile()">Export Quotes</button>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
   </div>
 
   <script src="script.js"></script>
