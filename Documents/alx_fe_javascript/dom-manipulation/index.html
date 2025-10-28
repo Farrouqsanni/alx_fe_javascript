@@ -1,15 +1,22 @@
-<select id="categoryFilter">
-  <option value="all">All Categories</option>
-</select>
+<body>
+  <div id="notification" style="display:none; background:#222; color:white; padding:10px; text-align:center;"></div>
 
-<p id="quote-text"></p>
-<p id="quote-category"></p>
+  <h1>Dynamic Quote Generator</h1>
+  <div>
+    <select id="categoryFilter" onchange="filterQuote()">
+      <option value="all">All Categories</option>
+    </select>
+  </div>
 
-<input type="text" id="new-quote-text" placeholder="Enter new quote">
-<input type="text" id="new-quote-category" placeholder="Enter category">
-<button id="add-quote-btn">Add Quote</button>
-<button id="new-quote-btn">New Quote</button>
+  <div id="quote-display">
+    <p id="quote-text"></p>
+    <p id="quote-category"></p>
+  </div>
 
-<!-- Import / Export -->
-<input type="file" id="importFile" accept=".json" />
-<button id="export-btn">Export JSON</button>
+  <button id="new-quote-btn">Show Random Quote</button>
+
+  <h2>Add a New Quote</h2>
+  <input type="text" id="new-quote-text" placeholder="Enter quote text">
+  <input type="text" id="new-quote-category" placeholder="Enter category">
+  <button id="add-quote-btn">Add Quote</button>
+</body>

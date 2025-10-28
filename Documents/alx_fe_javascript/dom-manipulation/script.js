@@ -1,14 +1,6 @@
-// === Dynamic Quote Generator with Filtering and Web Storage ===
+// === Dynamic Quote Generator with Server Sync & Conflict Resolution ===
 
-// Default quotes
-let quotes = [
-  { text: "Knowledge is power.", category: "Wisdom" },
-  { text: "Simplicity is the soul of efficiency.", category: "Productivity" },
-  { text: "Believe you can and you’re halfway there.", category: "Motivation" },
-  { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" },
-];
-
-// === Storage Functions ===
+// Local storage helpers
 function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
@@ -26,7 +18,15 @@ function loadSelectedCategory() {
   return localStorage.getItem("selectedCategory") || "all";
 }
 
-// === DOM Manipulation ===
+// === Initialize local quotes ===
+let quotes = [
+  { id: 1, text: "Knowledge is power.", category: "Wisdom", updatedAt: Date.now() },
+  { id: 2, text: "Simplicity is the soul of efficiency.", category: "Productivity", updatedAt: Date.now() },
+  { id: 3, text: "Believe you can and you’re halfway there.", category: "Motivation", updatedAt: Date.now() },
+  { id: 4, text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming", updatedAt: Date.now() }
+];
+
+// === UI Update Functions ===
 function displayRandomQuote() {
   const filter = document.getElementById("categoryFilter").value;
   const filtered = filter === "all" ? quotes : quotes.filter(q => q.category === filter);
@@ -51,18 +51,26 @@ function addQuote() {
   const category = document.getElementById("new-quote-category").value.trim();
 
   if (text && category) {
-    quotes.push({ text, category });
+    const newQuote = {
+      id: Date.now(),
+      text,
+      category,
+      updatedAt: Date.now()
+    };
+    quotes.push(newQuote);
     saveQuotes();
     populateCategories();
     displayRandomQuote();
-    document.getElementById("new-quote-text").value = "";
-    document.getElementById("new-quote-category").value = "";
+    showNotification("Quote added locally and will sync soon.");
   } else {
     alert("Please enter both a quote and category.");
   }
+
+  document.getElementById("new-quote-text").value = "";
+  document.getElementById("new-quote-category").value = "";
 }
 
-// === Category Filter System ===
+// === Category Management ===
 function populateCategories() {
   const select = document.getElementById("categoryFilter");
   const uniqueCategories = Array.from(new Set(quotes.map(q => q.category)));
@@ -75,51 +83,87 @@ function populateCategories() {
     select.appendChild(opt);
   });
 
-  // Restore saved selection
   select.value = loadSelectedCategory();
 }
 
-// ⚠️ ALX expects this exact name: filterQuote (singular)
 function filterQuote() {
   const selected = document.getElementById("categoryFilter").value;
   saveSelectedCategory(selected);
   displayRandomQuote();
 }
 
-// === JSON Import/Export ===
-function exportToJsonFile() {
-  const data = JSON.stringify(quotes, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "quotes.json";
-  a.click();
-  URL.revokeObjectURL(url);
+// === Simulated Server Sync ===
+function fetchServerQuotes() {
+  // Simulated server response (pretend this came from API)
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve([
+        { id: 1, text: "Knowledge is power.", category: "Wisdom", updatedAt: Date.now() },
+        { id: 2, text: "Simplicity is the soul of efficiency.", category: "Productivity", updatedAt: Date.now() },
+        { id: 5, text: "Consistency beats intensity.", category: "Motivation", updatedAt: Date.now() } // new server quote
+      ]);
+    }, 1500);
+  });
 }
 
-function importFromJsonFile(event) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const imported = JSON.parse(e.target.result);
-    quotes.push(...imported);
-    saveQuotes();
-    populateCategories();
-    alert("Quotes imported successfully!");
-  };
-  reader.readAsText(event.target.files[0]);
+// === Conflict Resolution ===
+function resolveConflicts(serverQuotes) {
+  const merged = [];
+  const localMap = new Map(quotes.map(q => [q.id, q]));
+
+  serverQuotes.forEach(sq => {
+    if (!localMap.has(sq.id)) {
+      // new server quote
+      merged.push(sq);
+      showNotification("New quote fetched from server!");
+    } else {
+      const local = localMap.get(sq.id);
+      if (sq.updatedAt > local.updatedAt) {
+        // server wins
+        merged.push(sq);
+        showNotification("Server version replaced a local quote due to conflict.");
+      } else {
+        merged.push(local);
+      }
+      localMap.delete(sq.id);
+    }
+  });
+
+  // Add remaining local-only quotes
+  for (const remaining of localMap.values()) {
+    merged.push(remaining);
+  }
+
+  quotes = merged;
+  saveQuotes();
+  populateCategories();
+  displayRandomQuote();
 }
 
-// === Initialize App ===
+// === Notification System ===
+function showNotification(message) {
+  const note = document.getElementById("notification");
+  note.textContent = message;
+  note.style.display = "block";
+  setTimeout(() => (note.style.display = "none"), 4000);
+}
+
+// === Auto Sync Loop ===
+async function syncWithServer() {
+  const serverQuotes = await fetchServerQuotes();
+  resolveConflicts(serverQuotes);
+}
+
+// === Initialization ===
 document.addEventListener("DOMContentLoaded", () => {
   loadQuotes();
   populateCategories();
+  displayRandomQuote();
 
   document.getElementById("new-quote-btn").addEventListener("click", displayRandomQuote);
   document.getElementById("add-quote-btn").addEventListener("click", addQuote);
-  document.getElementById("export-btn").addEventListener("click", exportToJsonFile);
-  document.getElementById("importFile").addEventListener("change", importFromJsonFile);
   document.getElementById("categoryFilter").addEventListener("change", filterQuote);
 
-  displayRandomQuote();
+  // Periodic sync every 10s
+  setInterval(syncWithServer, 10000);
 });
